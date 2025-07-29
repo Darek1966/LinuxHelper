@@ -4,6 +4,15 @@
 
 LinuxHelper is a web application that helps users find and understand Linux commands through natural language search. The application features a modern React frontend with a clean, responsive design and an Express.js backend that serves command data. Users can search for commands using everyday language and filter by categories like files, processes, network, and system operations.
 
+## Recent Changes
+
+- **July 29, 2025**: Significantly expanded the command database with 20+ new Linux commands covering:
+  - File operations: cp, mv, rm, cat, ls, mkdir, du, nano, grep, find, zip/unzip, chmod, chown
+  - Process management: ps, htop, pstree, process sorting by CPU usage
+  - System monitoring: uptime, uname, who, systemctl, journalctl, history, env
+  - Network tools: ping, wget, traceroute, lsof, ip addr/route, curl, netstat, telnet
+  - Each command includes detailed Polish explanations, parameter breakdowns, and comprehensive keywords for better search matching
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
