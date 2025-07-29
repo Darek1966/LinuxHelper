@@ -9,7 +9,7 @@ LinuxHelper is a web application that helps users find and understand Linux comm
 - **July 29, 2025**: 
   - **Major Database Migration**: Replaced in-memory storage with PostgreSQL database using Drizzle ORM
   - **Improved Search Algorithm**: Enhanced search precision to show only relevant results, filtering out common words
-  - **Export to Bash Scripts**: Added functionality to export selected commands to executable bash scripts
+  - **Export to Bash Scripts**: Added functionality to export selected commands to executable bash scripts, aliases, and text files
   - **Dark/Light Mode**: Added theme toggle with automatic system preference detection
   - **Windows WSL Support**: Added comprehensive WSL (Windows Subsystem for Linux) commands
   - **Expanded Command Database**: Added 91+ comprehensive Linux and WSL commands covering:
@@ -22,6 +22,7 @@ LinuxHelper is a web application that helps users find and understand Linux comm
   - **Database Architecture**: Migrated from MemStorage to DatabaseStorage with full CRUD operations
   - **Data Persistence**: All commands now stored in PostgreSQL with proper schema and migrations
   - **Search Precision**: Returns empty results for non-matching queries, shows relevant commands only
+  - **Multiple Export Formats**: Users can export commands as bash scripts (.sh), bash aliases (.alias), or plain text (.txt)
 
 ## User Preferences
 

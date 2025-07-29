@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Download, FileCode, Loader2 } from "lucide-react";
+import { Download, FileCode, Loader2, Terminal, FileText, Code } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/hooks/use-toast";
 import type { Command } from "@shared/schema";
 
@@ -16,6 +17,7 @@ interface ExportDialogProps {
 export function ExportDialog({ commands, searchQuery }: ExportDialogProps) {
   const [selectedCommands, setSelectedCommands] = useState<string[]>([]);
   const [scriptName, setScriptName] = useState("");
+  const [exportType, setExportType] = useState<"bash" | "aliases" | "text">("bash");
   const [isExporting, setIsExporting] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
@@ -58,6 +60,7 @@ export function ExportDialog({ commands, searchQuery }: ExportDialogProps) {
         body: JSON.stringify({
           commandIds: selectedCommands,
           scriptName: finalScriptName,
+          exportType: exportType,
         }),
       });
 
@@ -70,7 +73,8 @@ export function ExportDialog({ commands, searchQuery }: ExportDialogProps) {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `${finalScriptName}.sh`;
+      const extension = exportType === "aliases" ? ".alias" : exportType === "text" ? ".txt" : ".sh";
+      a.download = `${finalScriptName}${extension}`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
@@ -78,7 +82,7 @@ export function ExportDialog({ commands, searchQuery }: ExportDialogProps) {
 
       toast({
         title: "Sukces!",
-        description: `Eksportowano ${selectedCommands.length} poleceń do pliku ${finalScriptName}.sh`,
+        description: `Eksportowano ${selectedCommands.length} poleceń do pliku ${finalScriptName}${exportType === "aliases" ? ".alias" : exportType === "text" ? ".txt" : ".sh"}`,
       });
 
       setIsOpen(false);
@@ -132,8 +136,35 @@ export function ExportDialog({ commands, searchQuery }: ExportDialogProps) {
               placeholder="nazwa_skryptu"
             />
             <p className="text-sm text-muted-foreground">
-              Plik zostanie zapisany jako {scriptName || "nazwa_skryptu"}.sh
+              Plik zostanie zapisany jako {scriptName || "nazwa_skryptu"}{exportType === "aliases" ? ".alias" : exportType === "text" ? ".txt" : ".sh"}
             </p>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Typ eksportu</Label>
+            <RadioGroup value={exportType} onValueChange={(value) => setExportType(value as "bash" | "aliases" | "text")}>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="bash" id="bash" />
+                <Label htmlFor="bash" className="flex items-center gap-2 cursor-pointer">
+                  <Terminal className="h-4 w-4" />
+                  Skrypt Bash (.sh) - polecenia jako komentarze
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="aliases" id="aliases" />
+                <Label htmlFor="aliases" className="flex items-center gap-2 cursor-pointer">
+                  <Code className="h-4 w-4" />
+                  Aliasy Bash (.alias) - gotowe do użycia
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="text" id="text" />
+                <Label htmlFor="text" className="flex items-center gap-2 cursor-pointer">
+                  <FileText className="h-4 w-4" />
+                  Tekst (.txt) - tylko polecenia
+                </Label>
+              </div>
+            </RadioGroup>
           </div>
 
           <div className="space-y-2">

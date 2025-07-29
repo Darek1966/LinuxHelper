@@ -44,7 +44,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Export commands to bash script
   app.post("/api/commands/export", async (req, res) => {
     try {
-      const { commandIds, scriptName = "exported_commands" } = req.body;
+      const { commandIds, scriptName = "exported_commands", exportType = "bash" } = req.body;
       
       if (!commandIds || !Array.isArray(commandIds) || commandIds.length === 0) {
         return res.status(400).json({ error: "Command IDs are required" });
@@ -56,37 +56,81 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ error: "No commands found" });
       }
 
-      // Generate bash script content
-      let bashScript = `#!/bin/bash\n`;
-      bashScript += `# Generated bash script: ${scriptName}\n`;
-      bashScript += `# Created on: ${new Date().toISOString()}\n`;
-      bashScript += `# LinuxHelper - Eksporter poleceń Linux\n\n`;
-      
-      bashScript += `echo "=== ${scriptName.toUpperCase()} ==="\n`;
-      bashScript += `echo "Eksportowane polecenia Linux z LinuxHelper"\n`;
-      bashScript += `echo "Data: $(date)"\n`;
-      bashScript += `echo ""\n\n`;
+      let content = "";
+      let filename = "";
+      let contentType = "text/plain";
 
-      commands.forEach((cmd, index) => {
-        bashScript += `# ${index + 1}. ${cmd.title}\n`;
-        bashScript += `# ${cmd.description}\n`;
-        bashScript += `# Kategoria: ${cmd.category}\n`;
-        bashScript += `echo "Polecenie ${index + 1}: ${cmd.title}"\n`;
-        bashScript += `echo "Opis: ${cmd.description}"\n`;
-        bashScript += `echo "Polecenie: ${cmd.command}"\n`;
+      if (exportType === "aliases") {
+        // Generate bash aliases
+        content = `# Bash aliases generated from LinuxHelper\n`;
+        content += `# Created on: ${new Date().toISOString()}\n`;
+        content += `# Użycie: source ${scriptName}.alias\n\n`;
         
-        // Add command as comment for safety - user can uncomment to execute
-        bashScript += `# ${cmd.command}\n`;
-        bashScript += `echo ""\n\n`;
-      });
+        commands.forEach((cmd, index) => {
+          // Create safe alias name from command title
+          const aliasName = cmd.title
+            .toLowerCase()
+            .replace(/[^a-z0-9\s]/g, '')
+            .replace(/\s+/g, '_')
+            .substring(0, 30);
+          
+          content += `# ${cmd.title}\n`;
+          content += `# ${cmd.description}\n`;
+          content += `alias ${aliasName}='${cmd.command}'\n\n`;
+        });
+        
+        content += `# Aby użyć aliasów, uruchom: source ${scriptName}.alias\n`;
+        filename = `${scriptName}.alias`;
+        
+      } else if (exportType === "text") {
+        // Generate plain text with commands only
+        content = `Polecenia Linux - ${scriptName}\n`;
+        content += `Wygenerowane: ${new Date().toISOString()}\n`;
+        content += `Źródło: LinuxHelper\n\n`;
+        
+        commands.forEach((cmd, index) => {
+          content += `${index + 1}. ${cmd.title}\n`;
+          content += `   ${cmd.command}\n`;
+          content += `   ${cmd.description}\n\n`;
+        });
+        
+        filename = `${scriptName}.txt`;
+        
+      } else {
+        // Generate bash script (default)
+        content = `#!/bin/bash\n`;
+        content += `# Generated bash script: ${scriptName}\n`;
+        content += `# Created on: ${new Date().toISOString()}\n`;
+        content += `# LinuxHelper - Eksporter poleceń Linux\n\n`;
+        
+        content += `echo "=== ${scriptName.toUpperCase()} ==="\n`;
+        content += `echo "Eksportowane polecenia Linux z LinuxHelper"\n`;
+        content += `echo "Data: $(date)"\n`;
+        content += `echo ""\n\n`;
 
-      bashScript += `echo "=== KONIEC SKRYPTU ==="\n`;
-      bashScript += `echo "Uwaga: Polecenia są zakomentowane dla bezpieczeństwa."\n`;
-      bashScript += `echo "Usuń # przed poleceniem aby je wykonać."\n`;
+        commands.forEach((cmd, index) => {
+          content += `# ${index + 1}. ${cmd.title}\n`;
+          content += `# ${cmd.description}\n`;
+          content += `# Kategoria: ${cmd.category}\n`;
+          content += `echo "Polecenie ${index + 1}: ${cmd.title}"\n`;
+          content += `echo "Opis: ${cmd.description}"\n`;
+          content += `echo "Polecenie: ${cmd.command}"\n`;
+          
+          // Add command as comment for safety - user can uncomment to execute
+          content += `# ${cmd.command}\n`;
+          content += `echo ""\n\n`;
+        });
 
-      res.setHeader('Content-Type', 'text/plain');
-      res.setHeader('Content-Disposition', `attachment; filename="${scriptName}.sh"`);
-      res.send(bashScript);
+        content += `echo "=== KONIEC SKRYPTU ==="\n`;
+        content += `echo "Uwaga: Polecenia są zakomentowane dla bezpieczeństwa."\n`;
+        content += `echo "Usuń # przed poleceniem aby je wykonać."\n`;
+        
+        filename = `${scriptName}.sh`;
+      }
+
+      res.setHeader('Content-Type', contentType);
+      res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+      res.send(content);
     } catch (error) {
       console.error("Error exporting commands:", error);
       res.status(500).json({ error: "Failed to export commands" });
