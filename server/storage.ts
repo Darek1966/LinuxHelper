@@ -9,6 +9,7 @@ export interface IStorage {
   
   searchCommands(query: string, category?: string): Promise<Command[]>;
   getCommandsByCategory(category: string): Promise<Command[]>;
+  getCommandsByIds(ids: string[]): Promise<Command[]>;
   getAllCommands(): Promise<Command[]>;
 }
 
@@ -74,6 +75,15 @@ export class DatabaseStorage implements IStorage {
       return await db.select().from(commands);
     }
     return await db.select().from(commands).where(eq(commands.category, category));
+  }
+
+  async getCommandsByIds(ids: string[]): Promise<Command[]> {
+    if (ids.length === 0) {
+      return [];
+    }
+    
+    const allCommands = await db.select().from(commands);
+    return allCommands.filter(cmd => ids.includes(cmd.id));
   }
 
   async getAllCommands(): Promise<Command[]> {

@@ -5,6 +5,7 @@ import { Header } from "@/components/header";
 import { SearchSection } from "@/components/search-section";
 import { CategoryFilters } from "@/components/category-filters";
 import { CommandResultCard } from "@/components/command-result-card";
+import { ExportDialog } from "@/components/export-dialog";
 import { Button } from "@/components/ui/button";
 import type { Command } from "@shared/schema";
 
@@ -67,6 +68,21 @@ export default function Home() {
           activeCategory={activeCategory}
           onCategoryChange={handleCategoryChange}
         />
+
+        {/* Results Header with Export */}
+        {filteredCommands.length > 0 && !isLoading && (
+          <div className="flex justify-between items-center py-4">
+            <div className="text-sm text-slate-600">
+              Znaleziono {filteredCommands.length} poleceń
+              {searchQuery && (
+                <span className="ml-2 text-slate-400">
+                  dla zapytania: "{searchQuery}"
+                </span>
+              )}
+            </div>
+            <ExportDialog commands={filteredCommands} searchQuery={searchQuery} />
+          </div>
+        )}
 
         {/* Results Section */}
         <div className="space-y-6">
