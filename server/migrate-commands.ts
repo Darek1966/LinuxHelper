@@ -1035,6 +1035,215 @@ const initialCommands = [
       { flag: "-a", description: "All - wszystkie informacje" }
     ] as CommandParameter[],
     keywords: ["lsb_release", "wersja", "system", "dystrybucja", "ubuntu", "debian", "info"]
+  },
+  {
+    id: randomUUID(),
+    title: "Zainstaluj WSL (Windows Subsystem for Linux)",
+    command: "wsl --install",
+    category: "system",
+    description: "Zainstaluj Windows Subsystem for Linux",
+    explanation: "Instaluje WSL w systemie Windows. Domyślnie instaluje Ubuntu. Wymaga uprawnień administratora i restartu systemu.",
+    parameters: [
+      { flag: "wsl", description: "Windows Subsystem for Linux" },
+      { flag: "--install", description: "Zainstaluj WSL" }
+    ] as CommandParameter[],
+    keywords: ["wsl", "install", "windows", "subsystem", "linux", "ubuntu", "zainstaluj"]
+  },
+  {
+    id: randomUUID(),
+    title: "Lista dostępnych dystrybucji WSL",
+    command: "wsl --list --online",
+    category: "system",
+    description: "Wyświetl dostępne dystrybucje Linux do zainstalowania",
+    explanation: "Pokazuje listę wszystkich dystrybucji Linux dostępnych do instalacji w WSL, włączając Ubuntu, Debian, SUSE, Kali Linux.",
+    parameters: [
+      { flag: "wsl", description: "Windows Subsystem for Linux" },
+      { flag: "--list", description: "Lista dystrybucji" },
+      { flag: "--online", description: "Dostępne online" }
+    ] as CommandParameter[],
+    keywords: ["wsl", "list", "online", "dystrybucje", "ubuntu", "debian", "kali", "suse"]
+  },
+  {
+    id: randomUUID(),
+    title: "Zainstaluj konkretną dystrybucję WSL",
+    command: "wsl --install -d Ubuntu-22.04",
+    category: "system",
+    description: "Zainstaluj określoną dystrybucję Linux",
+    explanation: "Instaluje konkretną wersję dystrybucji Linux. Popularne opcje: Ubuntu-22.04, Ubuntu-20.04, Debian, kali-linux.",
+    parameters: [
+      { flag: "wsl", description: "Windows Subsystem for Linux" },
+      { flag: "--install", description: "Zainstaluj" },
+      { flag: "-d Ubuntu-22.04", description: "Nazwa dystrybucji" }
+    ] as CommandParameter[],
+    keywords: ["wsl", "install", "ubuntu", "debian", "kali", "dystrybucja", "konkretna"]
+  },
+  {
+    id: randomUUID(),
+    title: "Lista zainstalowanych dystrybucji WSL",
+    command: "wsl --list --verbose",
+    category: "system",
+    description: "Pokaż zainstalowane dystrybucje i ich status",
+    explanation: "Wyświetla wszystkie zainstalowane dystrybucje WSL, ich wersję WSL (1 lub 2) i aktualny status (Running/Stopped).",
+    parameters: [
+      { flag: "wsl", description: "Windows Subsystem for Linux" },
+      { flag: "--list", description: "Lista dystrybucji" },
+      { flag: "--verbose", description: "Szczegółowe informacje" }
+    ] as CommandParameter[],
+    keywords: ["wsl", "list", "verbose", "zainstalowane", "status", "running", "stopped"]
+  },
+  {
+    id: randomUUID(),
+    title: "Uruchom konkretną dystrybucję WSL",
+    command: "wsl -d Ubuntu-22.04",
+    category: "system",
+    description: "Uruchom określoną dystrybucję Linux",
+    explanation: "Uruchamia konkretną dystrybucję WSL. Jeśli nie podasz nazwy, uruchomi domyślną dystrybucję.",
+    parameters: [
+      { flag: "wsl", description: "Windows Subsystem for Linux" },
+      { flag: "-d Ubuntu-22.04", description: "Nazwa dystrybucji do uruchomienia" }
+    ] as CommandParameter[],
+    keywords: ["wsl", "uruchom", "start", "dystrybucja", "ubuntu", "debian"]
+  },
+  {
+    id: randomUUID(),
+    title: "Zatrzymaj dystrybucję WSL",
+    command: "wsl --terminate Ubuntu-22.04",
+    category: "system",
+    description: "Zatrzymaj działającą dystrybucję",
+    explanation: "Natychmiast zatrzymuje działającą dystrybucję WSL. Wszystkie procesy w tej dystrybucji zostaną zakończone.",
+    parameters: [
+      { flag: "wsl", description: "Windows Subsystem for Linux" },
+      { flag: "--terminate", description: "Zatrzymaj dystrybucję" },
+      { flag: "Ubuntu-22.04", description: "Nazwa dystrybucji" }
+    ] as CommandParameter[],
+    keywords: ["wsl", "terminate", "stop", "zatrzymaj", "zakończ", "dystrybucja"]
+  },
+  {
+    id: randomUUID(),
+    title: "Zatrzymaj wszystkie dystrybucje WSL",
+    command: "wsl --shutdown",
+    category: "system",
+    description: "Zatrzymaj wszystkie działające dystrybucje WSL",
+    explanation: "Zatrzymuje wszystkie działające dystrybucje WSL i usługę WSL. WSL zostanie automatycznie uruchomiony przy następnym użyciu.",
+    parameters: [
+      { flag: "wsl", description: "Windows Subsystem for Linux" },
+      { flag: "--shutdown", description: "Zatrzymaj wszystkie" }
+    ] as CommandParameter[],
+    keywords: ["wsl", "shutdown", "zatrzymaj", "wszystkie", "restart", "usługa"]
+  },
+  {
+    id: randomUUID(),
+    title: "Ustaw domyślną dystrybucję WSL",
+    command: "wsl --set-default Ubuntu-22.04",
+    category: "system",
+    description: "Ustaw domyślną dystrybucję Linux",
+    explanation: "Ustawia którą dystrybucję WSL uruchomić domyślnie gdy wykonasz polecenie 'wsl' bez parametrów.",
+    parameters: [
+      { flag: "wsl", description: "Windows Subsystem for Linux" },
+      { flag: "--set-default", description: "Ustaw jako domyślną" },
+      { flag: "Ubuntu-22.04", description: "Nazwa dystrybucji" }
+    ] as CommandParameter[],
+    keywords: ["wsl", "set-default", "domyślna", "default", "główna", "dystrybucja"]
+  },
+  {
+    id: randomUUID(),
+    title: "Konwertuj dystrybucję do WSL2",
+    command: "wsl --set-version Ubuntu-22.04 2",
+    category: "system",
+    description: "Zmień dystrybucję na WSL2",
+    explanation: "Konwertuje dystrybucję z WSL1 do WSL2. WSL2 oferuje lepszą wydajność i pełną kompatybilność z jądrem Linux.",
+    parameters: [
+      { flag: "wsl", description: "Windows Subsystem for Linux" },
+      { flag: "--set-version", description: "Ustaw wersję WSL" },
+      { flag: "Ubuntu-22.04", description: "Nazwa dystrybucji" },
+      { flag: "2", description: "Wersja WSL (1 lub 2)" }
+    ] as CommandParameter[],
+    keywords: ["wsl", "set-version", "wsl2", "convert", "konwertuj", "wydajność"]
+  },
+  {
+    id: randomUUID(),
+    title: "Usuń dystrybucję WSL",
+    command: "wsl --unregister Ubuntu-22.04",
+    category: "system",
+    description: "Usuń dystrybucję WSL całkowicie",
+    explanation: "Całkowicie usuwa dystrybucję WSL wraz z wszystkimi danymi. Ta operacja jest nieodwracalna!",
+    parameters: [
+      { flag: "wsl", description: "Windows Subsystem for Linux" },
+      { flag: "--unregister", description: "Usuń dystrybucję" },
+      { flag: "Ubuntu-22.04", description: "Nazwa dystrybucji do usunięcia" }
+    ] as CommandParameter[],
+    keywords: ["wsl", "unregister", "usuń", "delete", "remove", "dystrybucja"]
+  },
+  {
+    id: randomUUID(),
+    title: "Eksportuj dystrybucję WSL",
+    command: "wsl --export Ubuntu-22.04 C:\\backup\\ubuntu.tar",
+    category: "system",
+    description: "Utwórz kopię zapasową dystrybucji",
+    explanation: "Eksportuje całą dystrybucję WSL do pliku tar. Przydatne do tworzenia kopii zapasowych lub przenoszenia na inny komputer.",
+    parameters: [
+      { flag: "wsl", description: "Windows Subsystem for Linux" },
+      { flag: "--export", description: "Eksportuj dystrybucję" },
+      { flag: "Ubuntu-22.04", description: "Nazwa dystrybucji" },
+      { flag: "C:\\backup\\ubuntu.tar", description: "Ścieżka do pliku backup" }
+    ] as CommandParameter[],
+    keywords: ["wsl", "export", "backup", "kopia", "zapasowa", "tar", "eksport"]
+  },
+  {
+    id: randomUUID(),
+    title: "Importuj dystrybucję WSL",
+    command: "wsl --import MyUbuntu C:\\WSL\\MyUbuntu C:\\backup\\ubuntu.tar",
+    category: "system",
+    description: "Przywróć dystrybucję z kopii zapasowej",
+    explanation: "Importuje dystrybucję WSL z pliku tar. Pozwala na przywrócenie kopii zapasowej lub sklonowanie dystrybucji.",
+    parameters: [
+      { flag: "wsl", description: "Windows Subsystem for Linux" },
+      { flag: "--import", description: "Importuj dystrybucję" },
+      { flag: "MyUbuntu", description: "Nazwa nowej dystrybucji" },
+      { flag: "C:\\WSL\\MyUbuntu", description: "Katalog instalacji" },
+      { flag: "C:\\backup\\ubuntu.tar", description: "Plik backup do importu" }
+    ] as CommandParameter[],
+    keywords: ["wsl", "import", "przywróć", "restore", "backup", "tar", "sklonuj"]
+  },
+  {
+    id: randomUUID(),
+    title: "Sprawdź status WSL",
+    command: "wsl --status",
+    category: "system",
+    description: "Wyświetl informacje o WSL",
+    explanation: "Pokazuje informacje o systemie WSL: domyślną dystrybucję, wersję WSL, status automatycznych aktualizacji jądra.",
+    parameters: [
+      { flag: "wsl", description: "Windows Subsystem for Linux" },
+      { flag: "--status", description: "Status systemu WSL" }
+    ] as CommandParameter[],
+    keywords: ["wsl", "status", "informacje", "info", "domyślna", "wersja"]
+  },
+  {
+    id: randomUUID(),
+    title: "Uruchom polecenie w WSL z Windows",
+    command: "wsl ls -la",
+    category: "system",
+    description: "Wykonaj polecenie Linux z wiersza poleceń Windows",
+    explanation: "Uruchamia polecenie Linux w domyślnej dystrybucji WSL bez otwierania shell'a. Przydatne w skryptach Windows.",
+    parameters: [
+      { flag: "wsl", description: "Windows Subsystem for Linux" },
+      { flag: "ls -la", description: "Polecenie Linux do wykonania" }
+    ] as CommandParameter[],
+    keywords: ["wsl", "polecenie", "command", "execute", "linux", "windows", "cmd"]
+  },
+  {
+    id: randomUUID(),
+    title: "Otwórz folder Windows w WSL",
+    command: "wsl --cd /mnt/c/Users",
+    category: "system",
+    description: "Uruchom WSL w określonym katalogu",
+    explanation: "Uruchamia WSL i automatycznie przechodzi do podanego katalogu. Katalogi Windows są dostępne w /mnt/c/.",
+    parameters: [
+      { flag: "wsl", description: "Windows Subsystem for Linux" },
+      { flag: "--cd", description: "Change directory - zmień katalog" },
+      { flag: "/mnt/c/Users", description: "Ścieżka do katalogu" }
+    ] as CommandParameter[],
+    keywords: ["wsl", "cd", "katalog", "directory", "folder", "mnt", "windows"]
   }
 ];
 

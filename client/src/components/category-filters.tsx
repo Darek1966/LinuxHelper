@@ -28,8 +28,8 @@ export function CategoryFilters({ activeCategory, onCategoryChange }: CategoryFi
             variant={isActive ? "default" : "outline"}
             className={`px-6 py-2 rounded-full text-sm font-medium transition-all shadow-sm ${
               isActive 
-                ? "bg-blue-600 text-white hover:bg-blue-700" 
-                : "bg-white text-slate-600 hover:bg-slate-50 border-slate-200"
+                ? "bg-primary text-primary-foreground hover:bg-primary/90" 
+                : "bg-background text-foreground hover:bg-secondary/80 border-border"
             }`}
           >
             <Icon className="w-4 h-4 mr-2" />

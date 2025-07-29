@@ -65,7 +65,7 @@ export function CommandResultCard({ command }: CommandResultCardProps) {
   };
 
   return (
-    <Card className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow animate-fade-in">
+    <Card className="bg-card rounded-2xl shadow-sm border border-border overflow-hidden hover:shadow-md transition-shadow animate-fade-in">
       <CardContent className="p-6">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center space-x-3">
@@ -73,8 +73,8 @@ export function CommandResultCard({ command }: CommandResultCardProps) {
               <Icon className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="font-semibold text-slate-800">{command.title}</h3>
-              <span className="text-sm text-slate-500 bg-slate-100 px-2 py-1 rounded">
+              <h3 className="font-semibold text-foreground">{command.title}</h3>
+              <span className="text-sm text-muted-foreground bg-secondary px-2 py-1 rounded">
                 {getCategoryLabel(command.category)}
               </span>
             </div>
@@ -83,7 +83,7 @@ export function CommandResultCard({ command }: CommandResultCardProps) {
             variant="ghost"
             size="sm"
             onClick={handleBookmark}
-            className="text-slate-400 hover:text-slate-600 transition-colors"
+            className="text-muted-foreground hover:text-foreground transition-colors"
           >
             <Bookmark className={`w-4 h-4 ${isBookmarked ? 'fill-current' : ''}`} />
           </Button>
@@ -110,8 +110,8 @@ export function CommandResultCard({ command }: CommandResultCardProps) {
 
         {/* Explanation */}
         <div className="mb-4">
-          <h4 className="font-medium text-slate-800 mb-2">Wyjaśnienie:</h4>
-          <p className="text-slate-600 leading-relaxed">
+          <h4 className="font-medium text-foreground mb-2">Wyjaśnienie:</h4>
+          <p className="text-muted-foreground leading-relaxed">
             {command.explanation}
           </p>
         </div>
@@ -119,11 +119,11 @@ export function CommandResultCard({ command }: CommandResultCardProps) {
         {/* Parameters breakdown */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {command.parameters.map((param, index) => (
-            <div key={index} className="bg-slate-50 rounded-lg p-3">
+            <div key={index} className="bg-secondary rounded-lg p-3">
               <code className="font-mono text-sm font-semibold text-green-600 block mb-1">
                 {param.flag}
               </code>
-              <p className="text-xs text-slate-600">
+              <p className="text-xs text-muted-foreground">
                 {param.description}
               </p>
             </div>
