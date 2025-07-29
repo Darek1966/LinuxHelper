@@ -82,7 +82,7 @@ export default function Home() {
             filteredCommands.map((command) => (
               <CommandResultCard key={command.id} command={command} />
             ))
-          ) : (
+          ) : !isLoading ? (
             <div className="text-center py-16">
               <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Search className="text-slate-400 w-6 h-6" />
@@ -99,11 +99,11 @@ export default function Home() {
                 }}
                 className="text-blue-600 hover:text-blue-700 font-medium"
               >
-                Pokaż wszystkie polecenia
+                Wyczyść wyszukiwanie
                 <span className="ml-2">→</span>
               </Button>
             </div>
-          )}
+          ) : null}
         </div>
       </main>
 
