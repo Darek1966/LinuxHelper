@@ -608,6 +608,266 @@ const initialCommands = [
       { flag: "8080", description: "Numer portu" }
     ] as CommandParameter[],
     keywords: ["telnet", "port", "test", "otwarty", "dostępny", "connection"]
+  },
+  {
+    id: randomUUID(),
+    title: "Wyszukaj tekst w plikach",
+    command: "grep -r \"pattern\" /path/to/search",
+    category: "files",
+    description: "Znajdź tekst w plikach rekursywnie",
+    explanation: "Przeszukuje pliki w katalogu i podkatalogach w poszukiwaniu określonego wzorca tekstu. Opcja -r oznacza rekursywne przeszukiwanie.",
+    parameters: [
+      { flag: "grep", description: "Global Regular Expression Print" },
+      { flag: "-r", description: "Rekursywnie (w podkatalogach)" },
+      { flag: "\"pattern\"", description: "Szukany tekst/wzorzec" },
+      { flag: "/path/to/search", description: "Ścieżka do przeszukania" }
+    ] as CommandParameter[],
+    keywords: ["grep", "szukaj", "tekst", "find", "search", "wzorzec", "pattern"]
+  },
+  {
+    id: randomUUID(),
+    title: "Wyświetl zawartość katalogu",
+    command: "ls -la",
+    category: "files",
+    description: "Pokaż szczegółową listę plików i katalogów",
+    explanation: "Wyświetla wszystkie pliki i katalogi (-a) z szczegółowymi informacjami (-l) włączając ukryte pliki.",
+    parameters: [
+      { flag: "ls", description: "List - lista plików" },
+      { flag: "-l", description: "Long format - szczegółowy format" },
+      { flag: "-a", description: "All - wszystkie pliki (z ukrytymi)" }
+    ] as CommandParameter[],
+    keywords: ["ls", "lista", "pliki", "katalog", "directory", "list", "pokaż"]
+  },
+  {
+    id: randomUUID(),
+    title: "Skompresuj pliki do archiwum zip",
+    command: "zip -r archive.zip folder/",
+    category: "files",
+    description: "Utwórz archiwum ZIP z katalogu",
+    explanation: "Tworzy skompresowane archiwum ZIP z określonego katalogu. Opcja -r kompresuje rekursywnie wszystkie podkatalogi.",
+    parameters: [
+      { flag: "zip", description: "Narzędzie kompresji ZIP" },
+      { flag: "-r", description: "Rekursywnie (z podkatalogami)" },
+      { flag: "archive.zip", description: "Nazwa archiwum" },
+      { flag: "folder/", description: "Katalog do skompresowania" }
+    ] as CommandParameter[],
+    keywords: ["zip", "kompresja", "archiwum", "compress", "pakuj", "backup"]
+  },
+  {
+    id: randomUUID(),
+    title: "Rozpakuj archiwum zip",
+    command: "unzip archive.zip",
+    category: "files",
+    description: "Rozpakuj archiwum ZIP",
+    explanation: "Wypakowuje zawartość archiwum ZIP do bieżącego katalogu. Użyj -d katalog aby określić miejsce docelowe.",
+    parameters: [
+      { flag: "unzip", description: "Narzędzie do rozpakowywania ZIP" },
+      { flag: "archive.zip", description: "Nazwa archiwum do rozpakowania" }
+    ] as CommandParameter[],
+    keywords: ["unzip", "rozpakuj", "archiwum", "extract", "wypakowuj"]
+  },
+  {
+    id: randomUUID(),
+    title: "Monitoruj logi w czasie rzeczywistym",
+    command: "tail -f /var/log/syslog",
+    category: "system",
+    description: "Śledź logi na żywo",
+    explanation: "Wyświetla ostatnie linie pliku logu i kontynuuje wyświetlanie nowych wpisów w czasie rzeczywistym. Opcja -f oznacza follow.",
+    parameters: [
+      { flag: "tail", description: "Wyświetl koniec pliku" },
+      { flag: "-f", description: "Follow - śledź na żywo" },
+      { flag: "/var/log/syslog", description: "Ścieżka do pliku logu" }
+    ] as CommandParameter[],
+    keywords: ["tail", "logi", "logs", "monitor", "real-time", "śledź", "follow"]
+  },
+  {
+    id: randomUUID(),
+    title: "Wyświetl pierwsze linie pliku",
+    command: "head -20 filename.txt",
+    category: "files",
+    description: "Pokaż początek pliku",
+    explanation: "Wyświetla pierwsze 20 linii określonego pliku. Przydatne do szybkiego podglądu zawartości dużych plików.",
+    parameters: [
+      { flag: "head", description: "Wyświetl początek pliku" },
+      { flag: "-20", description: "Liczba linii do wyświetlenia" },
+      { flag: "filename.txt", description: "Nazwa pliku" }
+    ] as CommandParameter[],
+    keywords: ["head", "początek", "pierwszych", "linie", "podgląd", "preview"]
+  },
+  {
+    id: randomUUID(),
+    title: "Skopiuj pliki przez SSH",
+    command: "scp file.txt user@server:/path/",
+    category: "network",
+    description: "Prześlij plik na zdalny serwer",
+    explanation: "Kopiuje plik na zdalny serwer używając protokołu SSH. Wymaga dostępu SSH do serwera docelowego.",
+    parameters: [
+      { flag: "scp", description: "Secure Copy - bezpieczne kopiowanie" },
+      { flag: "file.txt", description: "Plik do przesłania" },
+      { flag: "user@server", description: "Użytkownik i adres serwera" },
+      { flag: ":/path/", description: "Ścieżka docelowa na serwerze" }
+    ] as CommandParameter[],
+    keywords: ["scp", "ssh", "kopiuj", "zdalny", "serwer", "transfer", "upload"]
+  },
+  {
+    id: randomUUID(),
+    title: "Połącz się z serwerem SSH",
+    command: "ssh user@hostname",
+    category: "network",
+    description: "Zaloguj się zdalnie przez SSH",
+    explanation: "Nawiązuje bezpieczne połączenie SSH z zdalnym serwerem. Po połączeniu możesz wykonywać polecenia na zdalnej maszynie.",
+    parameters: [
+      { flag: "ssh", description: "Secure Shell - bezpieczna powłoka" },
+      { flag: "user@hostname", description: "Użytkownik i adres serwera" }
+    ] as CommandParameter[],
+    keywords: ["ssh", "zdalny", "połączenie", "serwer", "logowanie", "terminal"]
+  },
+  {
+    id: randomUUID(),
+    title: "Wyświetl aktywne połączenia SSH",
+    command: "who -u",
+    category: "system",
+    description: "Pokaż zalogowanych użytkowników SSH",
+    explanation: "Wyświetla wszystkich aktualnie zalogowanych użytkowników wraz z informacjami o ich sesjach, w tym połączeniach SSH.",
+    parameters: [
+      { flag: "who", description: "Pokaż zalogowanych użytkowników" },
+      { flag: "-u", description: "Show idle time - pokaż czas bezczynności" }
+    ] as CommandParameter[],
+    keywords: ["who", "ssh", "zalogowani", "users", "sesje", "connections"]
+  },
+  {
+    id: randomUUID(),
+    title: "Sprawdź użycie dysku przez katalogi",
+    command: "du -h --max-depth=1",
+    category: "system",
+    description: "Pokaż rozmiar katalogów na pierwszym poziomie",
+    explanation: "Wyświetla rozmiar wszystkich katalogów w bieżącej lokalizacji, bez schodzenia głębiej niż jeden poziom.",
+    parameters: [
+      { flag: "du", description: "Disk usage - użycie dysku" },
+      { flag: "-h", description: "Human readable - czytelny format" },
+      { flag: "--max-depth=1", description: "Tylko pierwszy poziom katalogów" }
+    ] as CommandParameter[],
+    keywords: ["du", "rozmiar", "katalogi", "disk", "space", "usage", "folders"]
+  },
+  {
+    id: randomUUID(),
+    title: "Znajdź największe pliki",
+    command: "find . -type f -exec ls -lh {} \\; | sort -k5 -hr | head -10",
+    category: "files",
+    description: "Wyświetl 10 największych plików",
+    explanation: "Znajduje wszystkie pliki, sortuje je według rozmiaru i wyświetla 10 największych. Przydatne do znajdowania plików zajmujących dużo miejsca.",
+    parameters: [
+      { flag: "find . -type f", description: "Znajdź wszystkie pliki" },
+      { flag: "-exec ls -lh", description: "Wykonaj ls dla każdego pliku" },
+      { flag: "sort -k5 -hr", description: "Sortuj po rozmiarze" },
+      { flag: "head -10", description: "Pokaż 10 pierwszych" }
+    ] as CommandParameter[],
+    keywords: ["find", "biggest", "największe", "pliki", "rozmiar", "sort", "duże"]
+  },
+  {
+    id: randomUUID(),
+    title: "Zabij proces według PID",
+    command: "kill -9 12345",
+    category: "processes",
+    description: "Wymuś zakończenie procesu",
+    explanation: "Wymusza zakończenie procesu o określonym PID. Sygnał -9 (SIGKILL) nie może być zignorowany przez proces.",
+    parameters: [
+      { flag: "kill", description: "Zakończ proces" },
+      { flag: "-9", description: "SIGKILL - wymuś zakończenie" },
+      { flag: "12345", description: "PID procesu do zakończenia" }
+    ] as CommandParameter[],
+    keywords: ["kill", "pid", "proces", "zabij", "zakończ", "force", "signal"]
+  },
+  {
+    id: randomUUID(),
+    title: "Pokaż procesy w drzewie z PID",
+    command: "pstree -p",
+    category: "processes",
+    description: "Wyświetl drzewo procesów z numerami PID",
+    explanation: "Pokazuje strukturę procesów w formie drzewa wraz z numerami PID każdego procesu.",
+    parameters: [
+      { flag: "pstree", description: "Process tree - drzewo procesów" },
+      { flag: "-p", description: "Show PIDs - pokaż numery PID" }
+    ] as CommandParameter[],
+    keywords: ["pstree", "pid", "drzewo", "procesy", "hierarchia", "tree"]
+  },
+  {
+    id: randomUUID(),
+    title: "Sprawdź otwarte pliki przez proces",
+    command: "lsof -p 12345",
+    category: "processes",
+    description: "Pokaż pliki otwarte przez proces",
+    explanation: "Wyświetla wszystkie pliki, katalogi i połączenia sieciowe otwarte przez określony proces.",
+    parameters: [
+      { flag: "lsof", description: "List open files" },
+      { flag: "-p 12345", description: "PID procesu do sprawdzenia" }
+    ] as CommandParameter[],
+    keywords: ["lsof", "otwarte", "pliki", "proces", "pid", "files", "open"]
+  },
+  {
+    id: randomUUID(),
+    title: "Zmień priorytet procesu",
+    command: "renice -10 12345",
+    category: "processes",
+    description: "Ustaw priorytet uruchomionego procesu",
+    explanation: "Zmienia priorytet (nice value) uruchomionego procesu. Niższe wartości = wyższy priorytet.",
+    parameters: [
+      { flag: "renice", description: "Change process priority" },
+      { flag: "-10", description: "Nowa wartość priorytetu" },
+      { flag: "12345", description: "PID procesu" }
+    ] as CommandParameter[],
+    keywords: ["renice", "priorytet", "priority", "nice", "proces", "performance"]
+  },
+  {
+    id: randomUUID(),
+    title: "Sprawdź informacje o procesorze",
+    command: "lscpu",
+    category: "system",
+    description: "Wyświetl informacje o procesorze",
+    explanation: "Pokazuje szczegółowe informacje o procesorze: architekturę, liczbę rdzeni, częstotliwość i inne parametry.",
+    parameters: [
+      { flag: "lscpu", description: "List CPU information" }
+    ] as CommandParameter[],
+    keywords: ["lscpu", "cpu", "procesor", "cores", "rdzenie", "architecture", "info"]
+  },
+  {
+    id: randomUUID(),
+    title: "Pokaż informacje o pamięci",
+    command: "cat /proc/meminfo",
+    category: "system",
+    description: "Szczegółowe informacje o pamięci",
+    explanation: "Wyświetla kompletne informacje o pamięci systemowej z pliku /proc/meminfo, w tym dostępną, używaną i różne typy pamięci.",
+    parameters: [
+      { flag: "cat", description: "Wyświetl zawartość pliku" },
+      { flag: "/proc/meminfo", description: "Plik z informacjami o pamięci" }
+    ] as CommandParameter[],
+    keywords: ["meminfo", "pamięć", "memory", "ram", "system", "proc", "info"]
+  },
+  {
+    id: randomUUID(),
+    title: "Uruchom polecenie w tle",
+    command: "nohup command &",
+    category: "processes",
+    description: "Uruchom proces w tle, niezależnie od terminala",
+    explanation: "Uruchamia polecenie w tle i chroni je przed zakończeniem po zamknięciu terminala. Wyjście zapisywane do nohup.out.",
+    parameters: [
+      { flag: "nohup", description: "No hang up - nie przerywaj" },
+      { flag: "command", description: "Polecenie do uruchomienia" },
+      { flag: "&", description: "Uruchom w tle" }
+    ] as CommandParameter[],
+    keywords: ["nohup", "background", "tle", "daemon", "service", "detach"]
+  },
+  {
+    id: randomUUID(),
+    title: "Wyświetl aktywne zadania",
+    command: "jobs",
+    category: "processes",
+    description: "Pokaż zadania uruchomione w tle",
+    explanation: "Wyświetla listę wszystkich zadań uruchomionych w bieżącej sesji terminala, zarówno w tle jak i zatrzymanych.",
+    parameters: [
+      { flag: "jobs", description: "Lista zadań w sesji" }
+    ] as CommandParameter[],
+    keywords: ["jobs", "zadania", "background", "tle", "processes", "session"]
   }
 ];
 

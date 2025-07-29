@@ -44,8 +44,15 @@ export class DatabaseStorage implements IStorage {
       return allCommands;
     }
 
-    // Filter by search query
-    const searchTerms = query.toLowerCase().split(' ');
+    // Filter by search query - all terms must match
+    const searchTerms = query.toLowerCase().split(' ')
+      .filter(term => term.length > 2)
+      .filter(term => !['the', 'and', 'lub', 'oraz', 'albo', 'dla', 'przez', 'jak', 'czy', 'które', 'która', 'ktore', 'polecenie', 'polecenia', 'command', 'commands'].includes(term));
+    
+    if (searchTerms.length === 0) {
+      return []; // If no meaningful search terms, return empty array
+    }
+    
     const filteredCommands = allCommands.filter(cmd => {
       const searchableText = [
         cmd.title,
@@ -55,7 +62,8 @@ export class DatabaseStorage implements IStorage {
         ...cmd.keywords
       ].join(' ').toLowerCase();
 
-      return searchTerms.some(term => searchableText.includes(term));
+      // All search terms must be found in the searchable text
+      return searchTerms.every(term => searchableText.includes(term));
     });
 
     return filteredCommands;

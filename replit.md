@@ -8,14 +8,16 @@ LinuxHelper is a web application that helps users find and understand Linux comm
 
 - **July 29, 2025**: 
   - **Major Database Migration**: Replaced in-memory storage with PostgreSQL database using Drizzle ORM
-  - **Expanded Command Database**: Added 30+ comprehensive Linux commands covering:
-    - File operations: cp, mv, rm, cat, ls, mkdir, du, nano, grep, find, zip/unzip, chmod, chown
-    - Process management: ps, htop, pstree, process sorting by CPU usage  
-    - System monitoring: uptime, uname, who, systemctl, journalctl, history, env
-    - Network tools: ping, wget, traceroute, lsof, ip addr/route, curl, netstat, telnet
+  - **Improved Search Algorithm**: Enhanced search precision to show only relevant results, filtering out common words
+  - **Expanded Command Database**: Added 63+ comprehensive Linux commands covering:
+    - File operations: cp, mv, rm, cat, ls, mkdir, du, nano, grep, find, zip/unzip, chmod, chown, head, tail
+    - Process management: ps, htop, pstree, kill, renice, nohup, jobs, lsof by process
+    - System monitoring: uptime, uname, who, systemctl, journalctl, history, env, lscpu, meminfo
+    - Network tools: ping, wget, traceroute, lsof, ip addr/route, curl, netstat, telnet, ssh, scp
     - Each command includes detailed Polish explanations, parameter breakdowns, and comprehensive keywords for better search matching
   - **Database Architecture**: Migrated from MemStorage to DatabaseStorage with full CRUD operations
   - **Data Persistence**: All commands now stored in PostgreSQL with proper schema and migrations
+  - **Search Precision**: Returns empty results for non-matching queries, shows relevant commands only
 
 ## User Preferences
 
