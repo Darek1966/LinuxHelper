@@ -868,6 +868,173 @@ const initialCommands = [
       { flag: "jobs", description: "Lista zadań w sesji" }
     ] as CommandParameter[],
     keywords: ["jobs", "zadania", "background", "tle", "processes", "session"]
+  },
+  {
+    id: randomUUID(),
+    title: "Aktualizuj listę pakietów (Ubuntu/Debian)",
+    command: "sudo apt update",
+    category: "system",
+    description: "Odśwież listę dostępnych pakietów",
+    explanation: "Pobiera najnowsze informacje o pakietach z repozytoriów. To pierwsze polecenie przed instalacją lub aktualizacją pakietów w systemach Ubuntu/Debian.",
+    parameters: [
+      { flag: "sudo", description: "Uruchom z uprawnieniami administratora" },
+      { flag: "apt", description: "Advanced Package Tool" },
+      { flag: "update", description: "Zaktualizuj listę pakietów" }
+    ] as CommandParameter[],
+    keywords: ["apt", "update", "aktualizuj", "pakiety", "ubuntu", "debian", "lista", "refresh"]
+  },
+  {
+    id: randomUUID(),
+    title: "Zaktualizuj wszystkie pakiety (Ubuntu/Debian)",
+    command: "sudo apt upgrade",
+    category: "system",
+    description: "Aktualizuj zainstalowane pakiety do najnowszych wersji",
+    explanation: "Instaluje najnowsze wersje wszystkich zainstalowanych pakietów. Należy najpierw uruchomić 'apt update' aby odświeżyć listę pakietów.",
+    parameters: [
+      { flag: "sudo", description: "Uruchom z uprawnieniami administratora" },
+      { flag: "apt", description: "Advanced Package Tool" },
+      { flag: "upgrade", description: "Aktualizuj pakiety" }
+    ] as CommandParameter[],
+    keywords: ["apt", "upgrade", "aktualizuj", "pakiety", "ubuntu", "debian", "update", "najnowsze"]
+  },
+  {
+    id: randomUUID(),
+    title: "Pełna aktualizacja systemu (Ubuntu/Debian)",
+    command: "sudo apt dist-upgrade",
+    category: "system",
+    description: "Inteligentna aktualizacja z rozwiązywaniem zależności",
+    explanation: "Wykonuje pełną aktualizację systemu, może usuwać i instalować pakiety aby rozwiązać konflikty zależności. Bardziej zaawansowane niż zwykły upgrade.",
+    parameters: [
+      { flag: "sudo", description: "Uruchom z uprawnieniami administratora" },
+      { flag: "apt", description: "Advanced Package Tool" },
+      { flag: "dist-upgrade", description: "Distribution upgrade - pełna aktualizacja" }
+    ] as CommandParameter[],
+    keywords: ["apt", "dist-upgrade", "pełna", "aktualizacja", "ubuntu", "debian", "system", "upgrade"]
+  },
+  {
+    id: randomUUID(),
+    title: "Aktualizuj system (CentOS/RHEL/Fedora)",
+    command: "sudo yum update",
+    category: "system",
+    description: "Zaktualizuj pakiety w systemach Red Hat",
+    explanation: "Aktualizuje wszystkie zainstalowane pakiety do najnowszych wersji w systemach bazujących na Red Hat (CentOS, RHEL, Fedora starsze wersje).",
+    parameters: [
+      { flag: "sudo", description: "Uruchom z uprawnieniami administratora" },
+      { flag: "yum", description: "Yellowdog Updater Modified" },
+      { flag: "update", description: "Aktualizuj pakiety" }
+    ] as CommandParameter[],
+    keywords: ["yum", "update", "aktualizuj", "centos", "rhel", "redhat", "fedora", "pakiety"]
+  },
+  {
+    id: randomUUID(),
+    title: "Aktualizuj system (Fedora nowe wersje)",
+    command: "sudo dnf upgrade",
+    category: "system",
+    description: "Zaktualizuj pakiety używając DNF",
+    explanation: "DNF to następca YUM w nowszych wersjach Fedora. Aktualizuje wszystkie zainstalowane pakiety do najnowszych wersji.",
+    parameters: [
+      { flag: "sudo", description: "Uruchom z uprawnieniami administratora" },
+      { flag: "dnf", description: "Dandified YUM - następca YUM" },
+      { flag: "upgrade", description: "Aktualizuj pakiety" }
+    ] as CommandParameter[],
+    keywords: ["dnf", "upgrade", "aktualizuj", "fedora", "pakiety", "system", "update"]
+  },
+  {
+    id: randomUUID(),
+    title: "Aktualizuj system (Arch Linux)",
+    command: "sudo pacman -Syu",
+    category: "system",
+    description: "Pełna aktualizacja systemu Arch Linux",
+    explanation: "Synchronizuje bazy danych pakietów (-Sy) i aktualizuje system (-u). To standardowy sposób aktualizacji w Arch Linux.",
+    parameters: [
+      { flag: "sudo", description: "Uruchom z uprawnieniami administratora" },
+      { flag: "pacman", description: "Package Manager Arch Linux" },
+      { flag: "-S", description: "Sync - synchronizuj" },
+      { flag: "-y", description: "Refresh - odśwież bazy danych" },
+      { flag: "-u", description: "Upgrade - aktualizuj" }
+    ] as CommandParameter[],
+    keywords: ["pacman", "syu", "aktualizuj", "arch", "linux", "system", "sync", "upgrade"]
+  },
+  {
+    id: randomUUID(),
+    title: "Aktualizuj system (openSUSE)",
+    command: "sudo zypper update",
+    category: "system",
+    description: "Zaktualizuj pakiety w openSUSE",
+    explanation: "Aktualizuje zainstalowane pakiety do najnowszych wersji w systemie openSUSE używając menedżera pakietów zypper.",
+    parameters: [
+      { flag: "sudo", description: "Uruchom z uprawnieniami administratora" },
+      { flag: "zypper", description: "Menedżer pakietów openSUSE" },
+      { flag: "update", description: "Aktualizuj pakiety" }
+    ] as CommandParameter[],
+    keywords: ["zypper", "update", "aktualizuj", "opensuse", "suse", "pakiety", "system"]
+  },
+  {
+    id: randomUUID(),
+    title: "Wyczyść cache pakietów (Ubuntu/Debian)",
+    command: "sudo apt autoremove && sudo apt autoclean",
+    category: "system",
+    description: "Usuń niepotrzebne pakiety i wyczyść cache",
+    explanation: "Usuwa pakiety które nie są już potrzebne (autoremove) oraz czyści cache pobranych pakietów (autoclean). Pomaga zwolnić miejsce na dysku.",
+    parameters: [
+      { flag: "sudo apt autoremove", description: "Usuń niepotrzebne pakiety" },
+      { flag: "&&", description: "Wykonaj kolejne polecenie jeśli pierwsze się powiedzie" },
+      { flag: "sudo apt autoclean", description: "Wyczyść cache pakietów" }
+    ] as CommandParameter[],
+    keywords: ["apt", "autoremove", "autoclean", "clean", "cache", "wyczyść", "miejsce", "dysk"]
+  },
+  {
+    id: randomUUID(),
+    title: "Sprawdź dostępne aktualizacje (Ubuntu/Debian)",
+    command: "apt list --upgradable",
+    category: "system",
+    description: "Pokaż pakiety dostępne do aktualizacji",
+    explanation: "Wyświetla listę pakietów które mogą być zaktualizowane do nowszych wersji. Przydatne do sprawdzenia co zostanie zaktualizowane przed uruchomieniem upgrade.",
+    parameters: [
+      { flag: "apt list", description: "Lista pakietów" },
+      { flag: "--upgradable", description: "Tylko pakiety do aktualizacji" }
+    ] as CommandParameter[],
+    keywords: ["apt", "list", "upgradable", "aktualizacje", "dostępne", "pakiety", "sprawdź"]
+  },
+  {
+    id: randomUUID(),
+    title: "Aktualizuj jądro systemu (Ubuntu/Debian)",
+    command: "sudo apt update && sudo apt install linux-generic",
+    category: "system",
+    description: "Zaktualizuj jądro Linux do najnowszej wersji",
+    explanation: "Instaluje najnowszą wersję jądra Linux. Po aktualizacji jądra należy zrestartować system aby zmiany zaczęły obowiązywać.",
+    parameters: [
+      { flag: "sudo apt update", description: "Odśwież listę pakietów" },
+      { flag: "&&", description: "Wykonaj kolejne polecenie po sukcesie" },
+      { flag: "sudo apt install linux-generic", description: "Zainstaluj najnowsze jądro" }
+    ] as CommandParameter[],
+    keywords: ["kernel", "jądro", "linux-generic", "aktualizuj", "system", "ubuntu", "debian"]
+  },
+  {
+    id: randomUUID(),
+    title: "Restartuj system po aktualizacji",
+    command: "sudo reboot",
+    category: "system",
+    description: "Zrestartuj komputer",
+    explanation: "Restartuje system. Wymagane po niektórych aktualizacjach, szczególnie jądra systemu, aby zmiany zaczęły obowiązywać.",
+    parameters: [
+      { flag: "sudo", description: "Uruchom z uprawnieniami administratora" },
+      { flag: "reboot", description: "Zrestartuj system" }
+    ] as CommandParameter[],
+    keywords: ["reboot", "restart", "restartuj", "system", "aktualizacja", "kernel"]
+  },
+  {
+    id: randomUUID(),
+    title: "Sprawdź wersję systemu",
+    command: "lsb_release -a",
+    category: "system",
+    description: "Wyświetl informacje o wersji dystrybucji",
+    explanation: "Pokazuje szczegółowe informacje o zainstalowanej dystrybucji Linux: nazwę, wersję, codename. Przydatne przed i po aktualizacjach.",
+    parameters: [
+      { flag: "lsb_release", description: "Linux Standard Base release info" },
+      { flag: "-a", description: "All - wszystkie informacje" }
+    ] as CommandParameter[],
+    keywords: ["lsb_release", "wersja", "system", "dystrybucja", "ubuntu", "debian", "info"]
   }
 ];
 
