@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Copy, Check, Terminal, File, Network, Settings, Monitor, Folder, Cpu } from "lucide-react";
+import { Copy, Bookmark, Check, Terminal, File, Network, Settings, Monitor, Folder, Cpu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { useBookmarks } from "@/hooks/use-bookmarks";
 import { Command } from "@shared/schema";
 
 interface CommandResultCardProps {
@@ -12,6 +13,7 @@ interface CommandResultCardProps {
 export function CommandResultCard({ command }: CommandResultCardProps) {
   const [copied, setCopied] = useState(false);
   const { toast } = useToast();
+  const { toggleBookmark, isBookmarked } = useBookmarks();
 
   const Icon = categoryIcons[command.category as keyof typeof categoryIcons] || Settings;
   const colorClass = categoryColors[command.category as keyof typeof categoryColors] || "bg-gray-100 text-gray-600";
@@ -30,6 +32,14 @@ export function CommandResultCard({ command }: CommandResultCardProps) {
         variant: "destructive",
       });
     }
+  };
+
+  const handleBookmark = () => {
+    toggleBookmark(command);
+    toast({
+      title: isBookmarked(command.id) ? "Usunięto z zakładek" : "Dodano do zakładek",
+      description: isBookmarked(command.id) ? "Polecenie zostało usunięte z zakładek" : "Polecenie zostało dodane do zakładek",
+    });
   };
 
   const getCategoryLabel = (category: string) => {
@@ -57,6 +67,14 @@ export function CommandResultCard({ command }: CommandResultCardProps) {
               </span>
             </div>
           </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleBookmark}
+            className="text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <Bookmark className={`w-4 h-4 ${isBookmarked(command.id) ? 'fill-current' : ''}`} />
+          </Button>
         </div>
 
         {/* Command Display */}

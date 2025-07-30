@@ -1,7 +1,16 @@
-import { Terminal } from "lucide-react";
+import { Bookmark, History, Terminal } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Button } from "@/components/ui/button";
+import { useBookmarks } from "@/hooks/use-bookmarks";
 
-export function Header() {
+interface HeaderProps {
+  onToggleBookmarks: () => void;
+  showingBookmarks: boolean;
+}
+
+export function Header({ onToggleBookmarks, showingBookmarks }: HeaderProps) {
+  const { bookmarks } = useBookmarks();
+
   return (
     <header className="bg-background shadow-sm border-b border-border">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -16,6 +25,20 @@ export function Header() {
             </div>
           </div>
           <div className="flex items-center space-x-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onToggleBookmarks}
+              className={`flex items-center gap-2 ${showingBookmarks ? 'bg-secondary' : ''}`}
+            >
+              <Bookmark className={`w-4 h-4 ${bookmarks.length > 0 ? 'fill-current' : ''}`} />
+              <span className="hidden sm:inline">Zakładki</span>
+              {bookmarks.length > 0 && (
+                <span className="bg-primary text-primary-foreground text-xs rounded-full px-2 py-0.5 min-w-[20px] text-center">
+                  {bookmarks.length}
+                </span>
+              )}
+            </Button>
             <ThemeToggle />
           </div>
         </div>
