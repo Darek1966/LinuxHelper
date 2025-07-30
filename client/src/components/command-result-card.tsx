@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Copy, Check, Terminal, File, Network, Settings, Monitor, Folder, Cpu } from "lucide-react";
+import { Copy, Check, Terminal, File, Network, Settings, Monitor, Folder, Cpu, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Command } from "@shared/schema";
+import { useAISearch } from "@/hooks/use-ai-search";
 
 interface CommandResultCardProps {
   command: Command;
@@ -11,7 +12,10 @@ interface CommandResultCardProps {
 
 export function CommandResultCard({ command }: CommandResultCardProps) {
   const [copied, setCopied] = useState(false);
+  const [aiExplanation, setAiExplanation] = useState<string>("");
+  const [showAiExplanation, setShowAiExplanation] = useState(false);
   const { toast } = useToast();
+  const { generateCommandExplanation, isAILoading } = useAISearch();
 
   const Icon = categoryIcons[command.category as keyof typeof categoryIcons] || Settings;
   const colorClass = categoryColors[command.category as keyof typeof categoryColors] || "bg-gray-100 text-gray-600";
@@ -40,6 +44,37 @@ export function CommandResultCard({ command }: CommandResultCardProps) {
       system: "System"
     };
     return labels[category as keyof typeof labels] || category;
+  };
+
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(command.command);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+      toast({
+        title: "Skopiowano!",
+        description: "Polecenie zostało skopiowane do schowka.",
+      });
+    } catch (error) {
+      toast({
+        title: "Błąd",
+        description: "Nie udało się skopiować polecenia.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleAIExplanation = async () => {
+    if (aiExplanation) {
+      setShowAiExplanation(!showAiExplanation);
+      return;
+    }
+
+    const explanation = await generateCommandExplanation(command.command);
+    if (explanation) {
+      setAiExplanation(explanation);
+      setShowAiExplanation(true);
+    }
   };
 
   return (
@@ -85,6 +120,41 @@ export function CommandResultCard({ command }: CommandResultCardProps) {
             {command.explanation}
           </p>
         </div>
+          <div className="flex items-center gap-2">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={copyToClipboard}
+              className="h-8"
+            >
+              {copied ? (
+                <Check className="h-3 w-3 text-green-600" />
+              ) : (
+                <Copy className="h-3 w-3" />
+              )}
+              {copied ? "Skopiowano!" : "Kopiuj"}
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={handleAIExplanation}
+              disabled={isAILoading}
+              className="h-8"
+            >
+              <Sparkles className={`h-3 w-3 ${isAILoading ? 'animate-spin' : ''}`} />
+              AI Wyjaśnienie
+            </Button>
+          </div>
+        {/* AI Explanation */}
+        {showAiExplanation && aiExplanation && (
+          <div className="space-y-2 p-3 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg border border-purple-200">
+            <h4 className="text-sm font-medium text-purple-700 flex items-center gap-2">
+              <Sparkles className="h-4 w-4" />
+              Wyjaśnienie AI
+            </h4>
+            <p className="text-sm text-purple-800">{aiExplanation}</p>
+          </div>
+        )}
 
         {/* Parameters breakdown */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
