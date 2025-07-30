@@ -20,7 +20,7 @@ export function SearchSection({ onSearch, isLoading }: SearchSectionProps) {
     
     timeoutRef.current = setTimeout(() => {
       onSearch(searchValue);
-    }, 300);
+    }, 5000);
   }, [onSearch]);
 
   const handleSubmit = (e: React.FormEvent) => {
