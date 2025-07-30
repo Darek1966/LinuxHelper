@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
+
+import { useState, useCallback, useRef } from "react";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
@@ -8,38 +9,31 @@ interface SearchSectionProps {
   isLoading?: boolean;
 }
 
-export function SearchSection({ onSearch, value = "", isLoading }: SearchSectionProps) {
-  const [localValue, setLocalValue] = useState(value);
+export function SearchSection({ onSearch, isLoading }: SearchSectionProps) {
+  const [localValue, setLocalValue] = useState("");
+  const timeoutRef = useRef<NodeJS.Timeout>();
 
-  // Sync with external value changes only when not actively typing
-  useEffect(() => {
-    if (value !== localValue) {
-      setLocalValue(value);
+  const debouncedSearch = useCallback((searchValue: string) => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
-  }, [value]);
-
-  // Debounced search function
-  const debouncedSearch = useCallback(
-    (() => {
-      let timeoutId: NodeJS.Timeout;
-      return (searchValue: string) => {
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(() => {
-          onSearch(searchValue);
-        }, 300);
-      };
-    })(),
-    [onSearch]
-  );
+    
+    timeoutRef.current = setTimeout(() => {
+      onSearch(searchValue);
+    }, 300);
+  }, [onSearch]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
     onSearch(localValue);
   };
 
-  const handleInputChange = (newValue: string) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
     setLocalValue(newValue);
-    // Use debounced search to avoid frequent re-renders
     debouncedSearch(newValue);
   };
 
@@ -56,7 +50,7 @@ export function SearchSection({ onSearch, value = "", isLoading }: SearchSection
             type="text"
             placeholder="np. znajdź pliki większe niż 100MB w katalogu domowym"
             value={localValue}
-            onChange={(e) => handleInputChange(e.target.value)}
+            onChange={handleInputChange}
             className="w-full px-6 py-4 text-lg border border-input rounded-2xl focus:ring-2 focus:ring-ring focus:border-transparent shadow-sm pl-14 bg-background text-foreground"
             disabled={isLoading}
           />
