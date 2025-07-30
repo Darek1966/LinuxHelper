@@ -158,6 +158,11 @@ export default function Home() {
             ) : null}
           </div>
         )}
+
+        {/* Bookmarks Section */}
+        {showingBookmarks && (
+          <Bookmarks isVisible={true} />
+        )}
       </main>
 
       {/* Floating Help Button */}

@@ -13,8 +13,26 @@ interface BookmarksProps {
 export function Bookmarks({ isVisible }: BookmarksProps) {
   const { bookmarks, clearBookmarks } = useBookmarks();
 
-  if (!isVisible || bookmarks.length === 0) {
+  if (!isVisible) {
     return null;
+  }
+
+  if (bookmarks.length === 0) {
+    return (
+      <Card className="mb-6">
+        <CardContent className="p-8">
+          <div className="text-center">
+            <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+              <Bookmark className="h-6 w-6 text-muted-foreground" />
+            </div>
+            <h3 className="text-lg font-medium text-foreground mb-2">Brak zakładek</h3>
+            <p className="text-muted-foreground">
+              Nie masz jeszcze żadnych zapisanych zakładek. Dodaj polecenia do zakładek klikając ikonę zakładki w wynikach wyszukiwania.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    );
   }
 
   return (
