@@ -12,8 +12,8 @@ interface CommandResultCardProps {
 
 export function CommandResultCard({ command }: CommandResultCardProps) {
   const [copied, setCopied] = useState(false);
-  const { bookmarks, toggleBookmark, isBookmarked } = useBookmarks();
   const { toast } = useToast();
+  const { toggleBookmark, isBookmarked } = useBookmarks();
 
   const Icon = categoryIcons[command.category as keyof typeof categoryIcons] || Settings;
   const colorClass = categoryColors[command.category as keyof typeof categoryColors] || "bg-gray-100 text-gray-600";
