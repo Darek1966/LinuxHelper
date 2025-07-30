@@ -2,14 +2,13 @@ import { useState, useEffect, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Search, HelpCircle } from "lucide-react";
 import { Header } from "@/components/header";
-import SearchSection from "@/components/search-section";
-import { CommandResultCard } from "@/components/command-result-card";
-import { CategoryFilters } from "@/components/category-filters";
+import { SearchSection } from "@/components/search-section";
 import { SearchHistory } from "@/components/search-history";
+import { CategoryFilters } from "@/components/category-filters";
+import { CommandResultCard } from "@/components/command-result-card";
 import { ExportDialog } from "@/components/export-dialog";
-import { AISuggestions } from "@/components/ai-suggestions";
+import { Button } from "@/components/ui/button";
 import { useSearchHistory } from "@/hooks/use-search-history";
-import { Bookmarks } from "@/components/bookmarks";
 import type { Command } from "@shared/schema";
 
 function useDebounce<T>(value: T, delay: number): T {
@@ -79,20 +78,10 @@ export default function Home() {
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <SearchSection onSearch={handleSearch} isLoading={isLoading} />
 
-        {/* AI Suggestions */}
-        {!showingBookmarks && searchQuery && (
-          <AISuggestions 
-            query={searchQuery}
-            onSuggestionClick={handleSearch}
-          />
-        )}
-
-        {!showingBookmarks && (
-          <SearchHistory
-            onSelectSearch={handleSelectFromHistory}
-            currentQuery={searchQuery}
-          />
-        )}
+        <SearchHistory
+          onSelectSearch={handleSelectFromHistory}
+          currentQuery={searchQuery}
+        />
 
         <CategoryFilters
           activeCategory={activeCategory}
