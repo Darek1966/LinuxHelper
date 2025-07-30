@@ -1,10 +1,15 @@
 import { Bookmark, History, Terminal } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Button } from "@/components/ui/button"; // Assuming you are using shadcn/ui
-import { useBookmarks } from "@/hooks/use-bookmarks"; // Assuming you created this hook
+import { Button } from "@/components/ui/button";
+import { useBookmarks } from "@/hooks/use-bookmarks";
 
-export function Header() {
-  const { bookmarks, showingBookmarks, onToggleBookmarks } = useBookmarks();
+interface HeaderProps {
+  onToggleBookmarks: () => void;
+  showingBookmarks: boolean;
+}
+
+export function Header({ onToggleBookmarks, showingBookmarks }: HeaderProps) {
+  const { bookmarks } = useBookmarks();
 
   return (
     <header className="bg-background shadow-sm border-b border-border">
