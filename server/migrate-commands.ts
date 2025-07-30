@@ -3,6 +3,21 @@ import { commands } from "@shared/schema";
 import { randomUUID } from "crypto";
 import type { CommandParameter } from "@shared/schema";
 
+async function ensureCommandsTable() {
+  await db.execute(`
+    CREATE TABLE IF NOT EXISTS commands (
+      id UUID PRIMARY KEY,
+      title TEXT NOT NULL,
+      command TEXT NOT NULL,
+      category TEXT,
+      description TEXT,
+      explanation TEXT,
+      parameters JSONB,
+      keywords JSONB
+    );
+  `);
+}
+
 const initialCommands = [
   {
     id: randomUUID(),
@@ -1247,18 +1262,24 @@ const initialCommands = [
   }
 ];
 
+///function toPostgresArray(arr: string[]): string {
+///  return '{' + arr.map(s => `"${s.replace(/"/g, '\\"')}"`).join(',') + '}';
+///}
+
 async function migrateCommands() {
   try {
     console.log("Migrating commands to database...");
-    
-    // Clear existing commands first
-    await db.delete(commands);
-    
-    // Insert all commands
+
+    await db.execute(`DROP TABLE IF EXISTS commands;`);
+    await ensureCommandsTable();
+
     for (const command of initialCommands) {
-      await db.insert(commands).values(command);
+      await db.insert(commands).values({
+        ...command,
+        keywords: command.keywords, // przekazujemy zwykłą tablicę JS
+      });
     }
-    
+
     console.log(`Successfully migrated ${initialCommands.length} commands to database!`);
   } catch (error) {
     console.error("Error migrating commands:", error);
