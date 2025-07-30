@@ -1,3 +1,4 @@
+import { useState, useEffect, useCallback } from "react";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
@@ -8,14 +9,38 @@ interface SearchSectionProps {
 }
 
 export function SearchSection({ onSearch, value = "", isLoading }: SearchSectionProps) {
+  const [localValue, setLocalValue] = useState(value);
+
+  // Sync with external value changes only when not actively typing
+  useEffect(() => {
+    if (value !== localValue) {
+      setLocalValue(value);
+    }
+  }, [value]);
+
+  // Debounced search function
+  const debouncedSearch = useCallback(
+    (() => {
+      let timeoutId: NodeJS.Timeout;
+      return (searchValue: string) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          onSearch(searchValue);
+        }, 300);
+      };
+    })(),
+    [onSearch]
+  );
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSearch(value);
+    onSearch(localValue);
   };
 
   const handleInputChange = (newValue: string) => {
-    // Search on every keystroke with debouncing handled by the parent
-    onSearch(newValue);
+    setLocalValue(newValue);
+    // Use debounced search to avoid frequent re-renders
+    debouncedSearch(newValue);
   };
 
   return (
@@ -24,13 +49,13 @@ export function SearchSection({ onSearch, value = "", isLoading }: SearchSection
       <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
         Wpisz zadanie w języku naturalnym, a otrzymasz odpowiednie polecenie Linux z wyjaśnieniem
       </p>
-      
+
       <form onSubmit={handleSubmit} className="relative max-w-2xl mx-auto">
         <div className="relative">
           <Input
             type="text"
             placeholder="np. znajdź pliki większe niż 100MB w katalogu domowym"
-            value={value}
+            value={localValue}
             onChange={(e) => handleInputChange(e.target.value)}
             className="w-full px-6 py-4 text-lg border border-input rounded-2xl focus:ring-2 focus:ring-ring focus:border-transparent shadow-sm pl-14 bg-background text-foreground"
             disabled={isLoading}
