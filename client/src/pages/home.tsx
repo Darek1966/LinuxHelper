@@ -31,7 +31,6 @@ function useDebounce<T>(value: T, delay: number): T {
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
-  const [showingBookmarks, setShowingBookmarks] = useState(false);
   const { addToHistory } = useSearchHistory();
 
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
@@ -71,38 +70,24 @@ export default function Home() {
 
   const handleSelectFromHistory = (query: string) => {
     setSearchQuery(query);
-    setShowingBookmarks(false);
-  };
-
-  const handleToggleBookmarks = () => {
-    setShowingBookmarks(!showingBookmarks);
   };
 
   return (
     <div className="min-h-screen bg-background">
-      <Header
-        onToggleBookmarks={handleToggleBookmarks}
-        showingBookmarks={showingBookmarks}
-      />
+      <Header />
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <SearchSection onSearch={handleSearch} isLoading={isLoading} />
 
-        <Bookmarks isVisible={showingBookmarks} />
+        <SearchHistory
+          onSelectSearch={handleSelectFromHistory}
+          currentQuery={searchQuery}
+        />
 
-        {!showingBookmarks && (
-          <SearchHistory
-            onSelectSearch={handleSelectFromHistory}
-            currentQuery={searchQuery}
-          />
-        )}
-
-        {!showingBookmarks && (
-          <CategoryFilters
-            activeCategory={activeCategory}
-            onCategoryChange={handleCategoryChange}
-          />
-        )}
+        <CategoryFilters
+          activeCategory={activeCategory}
+          onCategoryChange={handleCategoryChange}
+        />
 
         {/* Results Header with Export */}
         {filteredCommands.length > 0 && !isLoading && !showingBookmarks && (
@@ -120,8 +105,7 @@ export default function Home() {
         )}
 
         {/* Results Section */}
-        {!showingBookmarks && (
-          <div className="space-y-6">
+        <div className="space-y-6">
             {isLoading ? (
               <div className="text-center py-16">
                 <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
@@ -148,6 +132,18 @@ export default function Home() {
                   onClick={() => {
                     setSearchQuery("");
                     setActiveCategory("all");
+                  }}
+                >
+                  Wyczyść wyszukiwanie
+                </Button>
+              </div>
+            ) : null}
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}gory("all");
                   }}
                   className="text-blue-600 hover:text-blue-700 font-medium"
                 >
