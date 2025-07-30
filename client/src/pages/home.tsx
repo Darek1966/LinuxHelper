@@ -7,6 +7,7 @@ import { SearchHistory } from "@/components/search-history";
 import { CategoryFilters } from "@/components/category-filters";
 import { CommandResultCard } from "@/components/command-result-card";
 import { ExportDialog } from "@/components/export-dialog";
+import { Tutorials } from "@/components/tutorials";
 import { Button } from "@/components/ui/button";
 import { useSearchHistory } from "@/hooks/use-search-history";
 import type { Command } from "@shared/schema";
@@ -30,6 +31,7 @@ function useDebounce<T>(value: T, delay: number): T {
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
+  const [showTutorials, setShowTutorials] = useState(false);
   const { addToHistory } = useSearchHistory();
 
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
@@ -76,77 +78,84 @@ export default function Home() {
       <Header />
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <SearchSection onSearch={handleSearch} isLoading={isLoading} />
+        {showTutorials ? (
+          <Tutorials />
+        ) : (
+          <>
+            <SearchSection onSearch={handleSearch} isLoading={isLoading} />
 
-        <SearchHistory
-          onSelectSearch={handleSelectFromHistory}
-          currentQuery={searchQuery}
-        />
+            <SearchHistory
+              onSelectSearch={handleSelectFromHistory}
+              currentQuery={searchQuery}
+            />
 
-        <CategoryFilters
-          activeCategory={activeCategory}
-          onCategoryChange={handleCategoryChange}
-        />
+            <CategoryFilters
+              activeCategory={activeCategory}
+              onCategoryChange={handleCategoryChange}
+            />
 
-        {/* Results Header with Export */}
-        {filteredCommands.length > 0 && !isLoading && (
-          <div className="flex justify-between items-center py-4">
-            <div className="text-sm text-muted-foreground">
-              Znaleziono {filteredCommands.length} poleceń
-              {searchQuery && (
-                <span className="ml-2 text-muted-foreground/70">
-                  dla zapytania: "{searchQuery}"
-                </span>
-              )}
+            {/* Results Header with Export */}
+            {filteredCommands.length > 0 && !isLoading && (
+              <div className="flex justify-between items-center py-4">
+                <div className="text-sm text-muted-foreground">
+                  Znaleziono {filteredCommands.length} poleceń
+                  {searchQuery && (
+                    <span className="ml-2 text-muted-foreground/70">
+                      dla zapytania: "{searchQuery}"
+                    </span>
+                  )}
+                </div>
+                <ExportDialog commands={filteredCommands} searchQuery={searchQuery} />
+              </div>
+            )}
+
+            {/* Results Section */}
+            <div className="space-y-6">
+              {isLoading ? (
+                <div className="text-center py-16">
+                  <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+                    <Search className="text-muted-foreground w-6 h-6" />
+                  </div>
+                  <h3 className="text-lg font-medium text-foreground mb-2">Wyszukiwanie...</h3>
+                  <p className="text-muted-foreground">Proszę czekać, szukam odpowiednich poleceń</p>
+                </div>
+              ) : filteredCommands.length > 0 ? (
+                filteredCommands.map((command) => (
+                  <CommandResultCard key={command.id} command={command} />
+                ))
+              ) : !isLoading ? (
+                <div className="text-center py-16">
+                  <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Search className="text-muted-foreground w-6 h-6" />
+                  </div>
+                  <h3 className="text-lg font-medium text-foreground mb-2">Brak wyników</h3>
+                  <p className="text-muted-foreground mb-6">
+                    Spróbuj użyć innych słów kluczowych lub wybierz inną kategorię
+                  </p>
+                  <Button
+                    variant="link"
+                    onClick={() => {
+                      setSearchQuery("");
+                      setActiveCategory("all");
+                    }}
+                    className="text-blue-600 hover:text-blue-700 font-medium"
+                  >
+                    Wyczyść wyszukiwanie
+                    <span className="ml-2">→</span>
+                  </Button>
+                </div>
+              ) : null}
             </div>
-            <ExportDialog commands={filteredCommands} searchQuery={searchQuery} />
-          </div>
+          </>
         )}
-
-        {/* Results Section */}
-        <div className="space-y-6">
-          {isLoading ? (
-            <div className="text-center py-16">
-              <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
-                <Search className="text-muted-foreground w-6 h-6" />
-              </div>
-              <h3 className="text-lg font-medium text-foreground mb-2">Wyszukiwanie...</h3>
-              <p className="text-muted-foreground">Proszę czekać, szukam odpowiednich poleceń</p>
-            </div>
-          ) : filteredCommands.length > 0 ? (
-            filteredCommands.map((command) => (
-              <CommandResultCard key={command.id} command={command} />
-            ))
-          ) : !isLoading ? (
-            <div className="text-center py-16">
-              <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4">
-                <Search className="text-muted-foreground w-6 h-6" />
-              </div>
-              <h3 className="text-lg font-medium text-foreground mb-2">Brak wyników</h3>
-              <p className="text-muted-foreground mb-6">
-                Spróbuj użyć innych słów kluczowych lub wybierz inną kategorię
-              </p>
-              <Button
-                variant="link"
-                onClick={() => {
-                  setSearchQuery("");
-                  setActiveCategory("all");
-                }}
-                className="text-blue-600 hover:text-blue-700 font-medium"
-              >
-                Wyczyść wyszukiwanie
-                <span className="ml-2">→</span>
-              </Button>
-            </div>
-          ) : null}
-        </div>
       </main>
 
-      {/* Floating Help Button */}
-      <div className="fixed bottom-6 right-6 z-50">
+      {/* Floating Buttons */}
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
         <Button
           size="lg"
-          className="w-14 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-105"
+          onClick={() => setShowTutorials(!showTutorials)}
+          className={`w-14 h-14 ${showTutorials ? 'bg-green-600 hover:bg-green-700' : 'bg-blue-600 hover:bg-blue-700'} text-white rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-105`}
         >
           <HelpCircle className="w-6 h-6" />
         </Button>
