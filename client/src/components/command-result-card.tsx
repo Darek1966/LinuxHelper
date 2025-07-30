@@ -1,32 +1,20 @@
 import { useState } from "react";
-import { Copy, Bookmark, Folder, Cpu, Network, Settings } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Copy, Bookmark, Check, Terminal, File, Network, Settings, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import type { Command } from "@shared/schema";
+import { useBookmarks } from "@/hooks/use-bookmarks";
+import { Command } from "@shared/schema";
 
 interface CommandResultCardProps {
   command: Command;
 }
 
-const categoryIcons = {
-  files: Folder,
-  processes: Cpu,
-  network: Network,
-  system: Settings,
-};
-
-const categoryColors = {
-  files: "bg-green-100 text-green-600",
-  processes: "bg-blue-100 text-blue-600",
-  network: "bg-purple-100 text-purple-600",
-  system: "bg-orange-100 text-orange-600",
-};
-
 export function CommandResultCard({ command }: CommandResultCardProps) {
-  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const { bookmarks, toggleBookmark, isBookmarked } = useBookmarks();
   const { toast } = useToast();
-  
+
   const Icon = categoryIcons[command.category as keyof typeof categoryIcons] || Settings;
   const colorClass = categoryColors[command.category as keyof typeof categoryColors] || "bg-gray-100 text-gray-600";
 
@@ -47,10 +35,10 @@ export function CommandResultCard({ command }: CommandResultCardProps) {
   };
 
   const handleBookmark = () => {
-    setIsBookmarked(!isBookmarked);
+    toggleBookmark(command);
     toast({
-      title: isBookmarked ? "Usunięto z zakładek" : "Dodano do zakładek",
-      description: isBookmarked ? "Polecenie zostało usunięte z zakładek." : "Polecenie zostało dodane do zakładek.",
+      title: isBookmarked(command.id) ? "Usunięto z zakładek" : "Dodano do zakładek",
+      description: isBookmarked(command.id) ? "Polecenie zostało usunięte z zakładek" : "Polecenie zostało dodane do zakładek",
     });
   };
 
@@ -85,10 +73,10 @@ export function CommandResultCard({ command }: CommandResultCardProps) {
             onClick={handleBookmark}
             className="text-muted-foreground hover:text-foreground transition-colors"
           >
-            <Bookmark className={`w-4 h-4 ${isBookmarked ? 'fill-current' : ''}`} />
+            <Bookmark className={`w-4 h-4 ${isBookmarked(command.id) ? 'fill-current' : ''}`} />
           </Button>
         </div>
-        
+
         {/* Command Display */}
         <div className="bg-slate-900 rounded-xl p-4 mb-4 relative group">
           <div className="flex items-center justify-between mb-2">
@@ -133,3 +121,17 @@ export function CommandResultCard({ command }: CommandResultCardProps) {
     </Card>
   );
 }
+
+const categoryIcons = {
+  files: Folder,
+  processes: Cpu,
+  network: Network,
+  system: Settings,
+};
+
+const categoryColors = {
+  files: "bg-green-100 text-green-600",
+  processes: "bg-blue-100 text-blue-600",
+  network: "bg-purple-100 text-purple-600",
+  system: "bg-orange-100 text-orange-600",
+};
