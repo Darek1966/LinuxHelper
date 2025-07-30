@@ -3,10 +3,12 @@ import { useQuery } from "@tanstack/react-query";
 import { Search, HelpCircle } from "lucide-react";
 import { Header } from "@/components/header";
 import { SearchSection } from "@/components/search-section";
+import { SearchHistory } from "@/components/search-history";
 import { CategoryFilters } from "@/components/category-filters";
 import { CommandResultCard } from "@/components/command-result-card";
 import { ExportDialog } from "@/components/export-dialog";
 import { Button } from "@/components/ui/button";
+import { useSearchHistory } from "@/hooks/use-search-history";
 import type { Command } from "@shared/schema";
 
 function useDebounce<T>(value: T, delay: number): T {
@@ -28,6 +30,7 @@ function useDebounce<T>(value: T, delay: number): T {
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
+  const { addToHistory } = useSearchHistory();
   
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
 
@@ -41,7 +44,14 @@ export default function Home() {
       
       const response = await fetch(`/api/commands/search?${params}`);
       if (!response.ok) throw new Error("Failed to search commands");
-      return response.json();
+      const results = await response.json();
+      
+      // Add to history if there's a search query and results
+      if (debouncedSearchQuery && debouncedSearchQuery.trim()) {
+        addToHistory(debouncedSearchQuery, results.length);
+      }
+      
+      return results;
     },
   });
 
@@ -64,6 +74,11 @@ export default function Home() {
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <SearchSection onSearch={handleSearch} value={searchQuery} isLoading={isLoading} />
         
+        <SearchHistory 
+          onSelectSearch={handleSearch} 
+          currentQuery={searchQuery}
+        />
+        
         <CategoryFilters 
           activeCategory={activeCategory}
           onCategoryChange={handleCategoryChange}
@@ -72,10 +87,10 @@ export default function Home() {
         {/* Results Header with Export */}
         {filteredCommands.length > 0 && !isLoading && (
           <div className="flex justify-between items-center py-4">
-            <div className="text-sm text-slate-600">
+            <div className="text-sm text-muted-foreground">
               Znaleziono {filteredCommands.length} poleceń
               {searchQuery && (
-                <span className="ml-2 text-slate-400">
+                <span className="ml-2 text-muted-foreground/70">
                   dla zapytania: "{searchQuery}"
                 </span>
               )}
@@ -88,11 +103,11 @@ export default function Home() {
         <div className="space-y-6">
           {isLoading ? (
             <div className="text-center py-16">
-              <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
-                <Search className="text-slate-400 w-6 h-6" />
+              <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+                <Search className="text-muted-foreground w-6 h-6" />
               </div>
-              <h3 className="text-lg font-medium text-slate-800 mb-2">Wyszukiwanie...</h3>
-              <p className="text-slate-600">Proszę czekać, szukam odpowiednich poleceń</p>
+              <h3 className="text-lg font-medium text-foreground mb-2">Wyszukiwanie...</h3>
+              <p className="text-muted-foreground">Proszę czekać, szukam odpowiednich poleceń</p>
             </div>
           ) : filteredCommands.length > 0 ? (
             filteredCommands.map((command) => (
@@ -100,11 +115,11 @@ export default function Home() {
             ))
           ) : !isLoading ? (
             <div className="text-center py-16">
-              <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Search className="text-slate-400 w-6 h-6" />
+              <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+                <Search className="text-muted-foreground w-6 h-6" />
               </div>
-              <h3 className="text-lg font-medium text-slate-800 mb-2">Brak wyników</h3>
-              <p className="text-slate-600 mb-6">
+              <h3 className="text-lg font-medium text-foreground mb-2">Brak wyników</h3>
+              <p className="text-muted-foreground mb-6">
                 Spróbuj użyć innych słów kluczowych lub wybierz inną kategorię
               </p>
               <Button

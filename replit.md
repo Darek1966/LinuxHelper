@@ -6,6 +6,11 @@ LinuxHelper is a web application that helps users find and understand Linux comm
 
 ## Recent Changes
 
+- **July 30, 2025**:
+  - **Search History**: Added persistent search history with localStorage, showing recent searches with quick access
+  - **Fixed Search Input**: Resolved cursor escaping issue by converting to controlled component
+  - **Enhanced Export Options**: Added multiple export formats (bash scripts, aliases, plain text)
+
 - **July 29, 2025**: 
   - **Major Database Migration**: Replaced in-memory storage with PostgreSQL database using Drizzle ORM
   - **Improved Search Algorithm**: Enhanced search precision to show only relevant results, filtering out common words
