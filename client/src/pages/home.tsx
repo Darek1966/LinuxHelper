@@ -72,7 +72,7 @@ export default function Home() {
       <Header />
       
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <SearchSection onSearch={handleSearch} isLoading={isLoading} />
+        <SearchSection onSearch={handleSearch} value={searchQuery} isLoading={isLoading} />
         
         <SearchHistory 
           onSelectSearch={handleSearch} 
