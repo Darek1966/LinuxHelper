@@ -32,14 +32,13 @@ Oto kroki, aby wypchnąć (pushować) pliki z folderu `LinuxHelper` do Twojego r
 git remote add origin https://github.com/TWOJ_LOGIN/LinuxHelper.git
 ```
 
-6.  Wypchnij pliki na GitHub (na główną gałąź):
+6. Wypchnij pliki na GitHub (na główną gałąź):
 
 ```
-git branch -M maingit push -u origin main
+git branch -M main
+git push -u origin main
 ```
-
 
  Po tych krokach Twoje pliki będą na GitHubie!
-
 
 ---
