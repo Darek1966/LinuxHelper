@@ -118,16 +118,18 @@ Jeśli chcesz przyczynić się do rozwoju projektu, wykonaj następujące kroki:
 * Dodawaj testy dla nowych funkcji
 * Upewnij się, że wszystkie testy przechodzą przed złożeniem PR
 
-## Licencja
-
-Ten projekt jest licencjonowany na warunkach licencji MIT - szczegóły znajdziesz w pliku [LICENSE](vscode-webview://1qd8v1tula0u43gou3ukfl0snpfh7dthaabr622qdvjsb150mmrk/LICENSE).
 
 ## Kontakt
 
 [![Email](https://img.shields.io/badge/Email-Napisz%20do%20mnie-blue?style=for-the-badge&logo=gmail&logoColor=white)](mailto:netdark_1966@op.pl)
 
 [![GitHub](https://img.shields.io/badge/GitHub-Darek1966-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Darek1966)
-    
+
+## Licencja
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+Ten projekt jest licencjonowany na licencji MIT - zobacz plik [LICENSE](LICENSE).
+
 ---
 
 *LinuxHelper - Twój przewodnik po świecie poleceń Linux*
